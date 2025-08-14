@@ -1,5 +1,9 @@
-/* Start of CSS Variables Block */
+/* ========================================
+   CSS CUSTOM PROPERTIES (VARIABLES)
+   Define global colors, sizes, and responsive breakpoints
+   ======================================== */
 :root {
+  /* Demo Site Color Variables */
   --ast-global-color-0: #0274be;
   --ast-global-color-1: #3a3a3a;
   --ast-global-color-2: #3a3a3a;
@@ -10,6 +14,7 @@
   --ast-global-color-7: #424242;
   --ast-global-color-8: #000000;
   
+  /* Custom Color Palette */
   --primary-color: #4CAF50;
   --secondary-color: #2E7D32;
   --accent-color: #FF9800;
@@ -17,6 +22,7 @@
   --warning-color: #FF9800;
   --error-color: #F44336;
   
+  /* Text Colors */
   --text-color: #3a3a3a;
   --heading-color: #3a3a3a;
   --link-color: #0274be;
@@ -24,20 +30,23 @@
   --background-color: #ffffff;
   --section-bg: #f9f9f9;
   
+  /* Layout Variables */
   --container-width: 1200px;
   --border-radius: 4px;
   --box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   --transition: all 0.3s ease;
   
-  /* Mobile breakpoints */
+  /* Responsive Breakpoints */
   --mobile: 480px;
   --tablet: 768px;
   --desktop: 1024px;
   --large-desktop: 1200px;
 }
-/* End of CSS Variables Block */
 
-/* Start of Reset & Base Styles Block */
+/* ========================================
+   CSS RESET & BASE STYLES
+   Mobile-first base styles for all elements
+   ======================================== */
 * {
   margin: 0;
   padding: 0;
@@ -66,14 +75,20 @@ body.mobile-menu-open {
   width: 100%;
 }
 
+/* ========================================
+   CONTAINER & LAYOUT SYSTEM
+   Responsive container for content centering
+   ======================================== */
 .container {
   max-width: var(--container-width);
   margin: 0 auto;
   padding: 0 20px;
 }
-/* End of Reset & Base Styles Block */
 
-/* Start of Typography Block */
+/* ========================================
+   TYPOGRAPHY SYSTEM
+   Mobile-first typography with responsive scaling
+   ======================================== */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -82,6 +97,7 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
 }
 
+/* Base heading sizes (mobile-first) */
 h1 { font-size: 2.5rem; }
 h2 { font-size: 2rem; }
 h3 { font-size: 1.75rem; }
@@ -102,9 +118,11 @@ a {
 a:hover {
   color: var(--primary-color);
 }
-/* End of Typography Block */
 
-/* Start of Button Styles Block */
+/* ========================================
+   BUTTON SYSTEM
+   Touch-friendly buttons with consistent styling
+   ======================================== */
 .wp-block-button__link,
 .wc-block-cart__submit-button,
 .single_add_to_cart_button,
@@ -126,7 +144,7 @@ a:hover {
   transition: var(--transition);
   text-decoration: none;
   line-height: 1;
-  min-height: 44px; /* Touch-friendly */
+  min-height: 44px; /* Touch-friendly minimum size */
 }
 
 .wp-block-button__link:hover,
@@ -148,9 +166,11 @@ a:hover {
   background-color: var(--primary-color);
   color: white;
 }
-/* End of Button Styles Block */
 
-/* Start of Header Styles Block */
+/* ========================================
+   HEADER STYLES
+   Responsive header with mobile menu integration
+   ======================================== */
 .site-header {
   background-color: var(--background-color);
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -159,6 +179,10 @@ a:hover {
   z-index: 998;
 }
 
+/* ========================================
+   HEADER TOP BAR
+   Contact info section (hidden on mobile)
+   ======================================== */
 .header-top {
   background-color: var(--section-bg);
   padding: 8px 0;
@@ -182,6 +206,10 @@ a:hover {
   font-weight: 500;
 }
 
+/* ========================================
+   MAIN HEADER SECTION
+   Logo, navigation, cart, and mobile toggle
+   ======================================== */
 .header-main {
   padding: 15px 0;
 }
@@ -193,6 +221,10 @@ a:hover {
   position: relative;
 }
 
+/* ========================================
+   SITE BRANDING
+   Logo and tagline styling
+   ======================================== */
 .site-branding .custom-logo-link {
   text-decoration: none;
 }
@@ -211,10 +243,11 @@ a:hover {
   margin: 0;
   font-weight: 400;
 }
-/* End of Header Styles Block */
 
-/* Start of Navigation Block */
-/* Navigation */
+/* ========================================
+   DESKTOP NAVIGATION
+   Horizontal menu for larger screens
+   ======================================== */
 .main-navigation {
   display: flex;
 }
@@ -256,10 +289,11 @@ a:hover {
 .menu-item a.active::after {
   width: 100%;
 }
-/* End of Navigation Block */
 
-/* Start of Header Widgets (Cart) Block */
-/* Header Widgets (Cart) */
+/* ========================================
+   HEADER WIDGETS (CART)
+   Shopping cart display and interaction
+   ======================================== */
 .header-widgets {
   display: flex;
   align-items: center;
@@ -275,11 +309,1006 @@ a:hover {
   transition: var(--transition);
 }
 
-.sh...(truncated 16543 characters)...anslateY(-2px);
+.shopping-cart-container .cart-contents:hover {
+  background-color: var(--primary-color);
+  color: white;
 }
-/* End of Header Widgets (Cart) Block */
 
-/* Start of Site Info Block */
+.cart-icon {
+  font-size: 18px;
+}
+
+.cart-contents-count {
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.cart-contents-total {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* ========================================
+   MOBILE MENU TOGGLE BUTTON
+   Hamburger menu with animation
+   ======================================== */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: 2px solid var(--primary-color);
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1001;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+  position: relative;
+  width: 50px;
+  height: 50px;
+  touch-action: manipulation; /* Prevent zoom on double tap */
+}
+
+.menu-toggle:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.menu-toggle:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.menu-toggle:hover .hamburger-inner,
+.menu-toggle:hover .hamburger-inner::before,
+.menu-toggle:hover .hamburger-inner::after {
+  background-color: white;
+}
+
+/* ========================================
+   HAMBURGER ICON STRUCTURE
+   Three-line hamburger icon with animation
+   ======================================== */
+.hamburger-box {
+  display: block;
+  width: 30px;
+  height: 24px;
+  position: relative;
+}
+
+.hamburger-inner {
+  display: block;
+  top: 50%;
+  margin-top: -2px;
+  width: 30px;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  position: absolute;
+  transition: var(--transition);
+}
+
+.hamburger-inner::before,
+.hamburger-inner::after {
+  content: '';
+  display: block;
+  width: 30px;
+  height: 3px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  position: absolute;
+  transition: var(--transition);
+}
+
+.hamburger-inner::before {
+  top: -10px;
+}
+
+.hamburger-inner::after {
+  bottom: -10px;
+}
+
+/* ========================================
+   HAMBURGER ANIMATION (ACTIVE STATE)
+   Transform hamburger to X when menu is open
+   ======================================== */
+.menu-toggle.is-active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.menu-toggle.is-active .hamburger-inner {
+  transform: rotate(45deg);
+  background-color: white;
+}
+
+.menu-toggle.is-active .hamburger-inner::before {
+  top: 0;
+  transform: rotate(90deg);
+  background-color: white;
+}
+
+.menu-toggle.is-active .hamburger-inner::after {
+  bottom: 0;
+  transform: rotate(90deg);
+  background-color: white;
+}
+
+/* ========================================
+   MOBILE NAVIGATION SYSTEM
+   Full-screen overlay mobile menu
+   ======================================== */
+.mobile-navigation {
+  display: none;
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.mobile-menu-overlay.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ========================================
+   MOBILE MENU CONTENT
+   Slide-out menu panel with navigation
+   ======================================== */
+.mobile-menu-content {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 320px;
+  max-width: 90vw;
+  height: 100vh;
+  background-color: var(--background-color);
+  z-index: 1000;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu-content.is-active {
+  right: 0;
+}
+
+.mobile-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: var(--primary-color);
+  color: white;
+  flex-shrink: 0;
+}
+
+.mobile-menu-header h3 {
+  margin: 0;
+  color: white;
+  font-size: 1.25rem;
+}
+
+/* ========================================
+   MOBILE MENU NAVIGATION
+   Touch-friendly navigation links
+   ======================================== */
+.mobile-nav {
+  padding: 0;
+  flex: 1;
+}
+
+.mobile-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-menu-list li {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.mobile-menu-list li:last-child {
+  border-bottom: none;
+}
+
+.mobile-menu-list a {
+  display: block;
+  padding: 20px;
+  color: var(--text-color);
+  font-weight: 500;
+  font-size: 18px;
+  transition: var(--transition);
+  text-decoration: none;
+  min-height: 60px; /* Touch-friendly */
+  display: flex;
+  align-items: center;
+}
+
+.mobile-menu-list a:hover,
+.mobile-menu-list a.active {
+  color: var(--primary-color);
+  background-color: var(--section-bg);
+  padding-left: 30px;
+}
+
+.mobile-menu-footer {
+  padding: 20px;
+  background-color: var(--section-bg);
+  text-align: center;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.mobile-menu-footer p {
+  margin: 5px 0;
+}
+
+/* ========================================
+   MAIN CONTENT AREA
+   Container for dynamic SPA content
+   ======================================== */
+.site-main {
+  min-height: calc(100vh - 200px);
+}
+
+.content-area {
+  width: 100%;
+}
+
+.site-content {
+  padding: 0;
+}
+
+/* ========================================
+   HERO SECTION
+   Main banner with call-to-action
+   ======================================== */
+.hero-section {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 80px 0;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  color: var(--heading-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.hero-content p {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ========================================
+   SECTION LAYOUTS
+   Reusable section containers
+   ======================================== */
+.wp-block-group,
+.section {
+  padding: 60px 0;
+}
+
+.section-alt {
+  background-color: var(--section-bg);
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.section-header h2 {
+  font-size: 2.5rem;
+  color: var(--heading-color);
+  margin-bottom: 1rem;
+}
+
+.section-header p {
+  font-size: 1.125rem;
+  color: var(--text-color);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   SERVICES GRID LAYOUT
+   Responsive grid for service items
+   ======================================== */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.service-item {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+}
+
+.service-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.service-icon {
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: white;
+  font-size: 2rem;
+}
+
+.service-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--heading-color);
+}
+
+.service-description {
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* ========================================
+   PRODUCT GRID SYSTEM
+   Responsive product grid with auto-fit
+   ======================================== */
+.products-grid,
+.wc-block-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.product-item,
+.wc-block-grid__product {
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.product-item:hover,
+.wc-block-grid__product:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.product-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  background-color: var(--section-bg);
+}
+
+.product-details {
+  padding: 20px;
+}
+
+.product-category {
+  color: var(--text-color);
+  font-size: 0.875rem;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.product-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--heading-color);
+}
+
+.product-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+}
+
+.product-rating {
+  margin-bottom: 15px;
+}
+
+.star-rating {
+  color: #ffa500;
+}
+
+/* ========================================
+   CATEGORIES GRID LAYOUT
+   Image-based category cards
+   ======================================== */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.category-item {
+  position: relative;
+  height: 300px;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.category-item:hover {
+  transform: scale(1.05);
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+  display: flex;
+  align-items: end;
+  padding: 30px;
+}
+
+.category-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ========================================
+   STATISTICS SECTION
+   Dark background section with stats
+   ======================================== */
+.stats-section {
+  background-color: var(--secondary-color);
+  color: white;
+  text-align: center;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.stat-item h3 {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.stat-item p {
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+/* ========================================
+   TESTIMONIALS GRID
+   Customer review cards
+   ======================================== */
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.testimonial-item {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  position: relative;
+}
+
+.testimonial-content {
+  font-style: italic;
+  margin-bottom: 20px;
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.author-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--heading-color);
+}
+
+/* ========================================
+   PRODUCT DETAIL PAGE LAYOUT
+   Two-column product detail layout
+   ======================================== */
+.product-detail-container {
+  padding: 40px 0;
+}
+
+.product-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 50px;
+}
+
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-main-image {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+}
+
+.product-thumbnails {
+  display: flex;
+  gap: 10px;
+}
+
+.product-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.product-thumbnail:hover,
+.product-thumbnail.active {
+  border-color: var(--primary-color);
+}
+
+.product-summary h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.product-meta {
+  margin-bottom: 20px;
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+}
+
+.product-description {
+  margin-bottom: 30px;
+  line-height: 1.8;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.quantity-input {
+  width: 80px;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  text-align: center;
+  font-size: 16px;
+}
+
+/* ========================================
+   CART PAGE LAYOUT
+   Shopping cart table and totals
+   ======================================== */
+.cart-container {
+  padding: 40px 0;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  background: white;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.cart-table th,
+.cart-table td {
+  padding: 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cart-table th {
+  background-color: var(--section-bg);
+  font-weight: 600;
+  color: var(--heading-color);
+}
+
+.cart-item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+}
+
+.cart-item-details {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.cart-item-details h4 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+}
+
+.cart-item-meta {
+  font-size: 0.875rem;
+  color: var(--text-color);
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-btn {
+  width: 35px;
+  height: 35px;
+  border: 1px solid var(--border-color);
+  background: white;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.quantity-btn:hover {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.cart-totals {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 400px;
+  margin-left: auto;
+}
+
+.cart-totals h3 {
+  margin-bottom: 20px;
+  color: var(--heading-color);
+}
+
+.totals-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.totals-row:last-child {
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+}
+
+/* ========================================
+   CHECKOUT PAGE LAYOUT
+   Two-column checkout form and order summary
+   ======================================== */
+.checkout-container {
+  padding: 40px 0;
+}
+
+.checkout-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 50px;
+}
+
+.checkout-form {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+.form-section {
+  margin-bottom: 30px;
+}
+
+.form-section h3 {
+  margin-bottom: 20px;
+  color: var(--heading-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 10px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--heading-color);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  transition: var(--transition);
+  min-height: 44px; /* Touch-friendly */
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.checkout-sidebar {
+  background: white;
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  height: fit-content;
+}
+
+.order-summary h3 {
+  margin-bottom: 20px;
+  color: var(--heading-color);
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.order-item:last-child {
+  border-bottom: none;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--primary-color);
+}
+
+.payment-methods {
+  margin-top: 20px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  min-height: 50px; /* Touch-friendly */
+}
+
+.payment-method:hover,
+.payment-method.selected {
+  border-color: var(--primary-color);
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.payment-method input[type="radio"] {
+  margin-right: 10px;
+}
+
+/* ========================================
+   FILTER SYSTEM
+   Product filtering interface
+   ======================================== */
+.filters-container {
+  background: white;
+  padding: 20px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  margin-bottom: 30px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-label {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-right: 10px;
+}
+
+.filter-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 14px;
+  min-height: 44px; /* Touch-friendly */
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* ========================================
+   FOOTER STYLES
+   Multi-column footer with widgets
+   ======================================== */
+.site-footer {
+  background-color: var(--heading-color);
+  color: #ccc;
+  margin-top: 60px;
+}
+
+.footer-widgets {
+  padding: 50px 0 30px;
+}
+
+.footer-widgets-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.footer-widget-area .widget-title {
+  color: white;
+  font-size: 1.25rem;
+  margin-bottom: 20px;
+}
+
+.footer-widget-area .menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-widget-area .menu li {
+  margin-bottom: 8px;
+}
+
+.footer-widget-area .menu a {
+  color: #ccc;
+  transition: var(--transition);
+}
+
+.footer-widget-area .menu a:hover {
+  color: var(--primary-color);
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.social-links a {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 40px;
+  color: white;
+  transition: var(--transition);
+}
+
+.social-links a:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
 .site-info {
   border-top: 1px solid #555;
   padding: 20px 0;
@@ -290,10 +1319,55 @@ a:hover {
   margin: 0;
   color: #999;
 }
-/* End of Site Info Block */
 
-/* Start of Utility Classes Block */
-/* Utility Classes */
+/* ========================================
+   BREADCRUMBS
+   SEO-friendly navigation breadcrumbs
+   ======================================== */
+.breadcrumb-navigation {
+  background-color: var(--section-bg);
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.breadcrumbs {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.breadcrumbs li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+  content: '/';
+  margin: 0 10px;
+  color: #999;
+}
+
+.breadcrumbs a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumbs li:last-child span {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+/* ========================================
+   UTILITY CLASSES
+   Reusable helper classes
+   ======================================== */
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -307,10 +1381,11 @@ a:hover {
 .mt-1 { margin-top: 1rem; }
 .mt-2 { margin-top: 2rem; }
 .mt-3 { margin-top: 3rem; }
-/* End of Utility Classes Block */
 
-/* Start of Loading & Empty States Block */
-/* Loading & Empty States */
+/* ========================================
+   LOADING & EMPTY STATES
+   Loading spinners and empty state messages
+   ======================================== */
 .loading-spinner {
   display: flex;
   justify-content: center;
@@ -342,10 +1417,11 @@ a:hover {
   margin-bottom: 15px;
   color: var(--heading-color);
 }
-/* End of Loading & Empty States Block */
 
-/* Start of Animations Block */
-/* Animations */
+/* ========================================
+   ANIMATIONS
+   CSS animations for smooth transitions
+   ======================================== */
 .fade-in {
   animation: fadeIn 0.5s ease-in;
 }
@@ -360,10 +1436,16 @@ a:hover {
     transform: translateY(0);
   }
 }
-/* End of Animations Block */
 
-/* Start of Responsive Design - ENHANCED MOBILE Block */
-/* Responsive Design - ENHANCED MOBILE */
+/* ========================================
+   RESPONSIVE BREAKPOINTS
+   Mobile-first responsive design implementation
+   ======================================== */
+
+/* ========================================
+   TABLET BREAKPOINT (768px+)
+   Enhanced layout for tablet screens
+   ======================================== */
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
@@ -501,9 +1583,11 @@ a:hover {
     margin-bottom: 10px;
   }
 }
-/* End of Responsive Design - ENHANCED MOBILE Block */
 
-/* Start of Small Mobile Adjustments Block */
+/* ========================================
+   SMALL MOBILE BREAKPOINT (480px and below)
+   Optimized for small phone screens
+   ======================================== */
 @media (max-width: 480px) {
   /* Small mobile adjustments */
   .hero-content h1 {
@@ -553,10 +1637,11 @@ a:hover {
     font-size: 16px; /* Prevent zoom on iOS */
   }
 }
-/* End of Small Mobile Adjustments Block */
 
-/* Start of High DPI / Retina Displays Block */
-/* High DPI / Retina displays */
+/* ========================================
+   HIGH DPI / RETINA DISPLAYS
+   Sharp borders and elements for high-resolution screens
+   ======================================== */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
        only screen and (min--moz-device-pixel-ratio: 2),
        only screen and (-o-min-device-pixel-ratio: 2/1),
@@ -570,10 +1655,11 @@ a:hover {
     border: 0.5px solid var(--border-color);
   }
 }
-/* End of High DPI / Retina Displays Block */
 
-/* Start of Landscape Orientation Adjustments Block */
-/* Landscape orientation adjustments for mobile */
+/* ========================================
+   LANDSCAPE ORIENTATION (MOBILE)
+   Adjustments for mobile landscape view
+   ======================================== */
 @media screen and (max-height: 500px) and (orientation: landscape) {
   .mobile-menu-content {
     padding-top: 10px;
@@ -588,4 +1674,3 @@ a:hover {
     min-height: 50px;
   }
 }
-/* End of Landscape Orientation Adjustments Block */
