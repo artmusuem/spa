@@ -1,6 +1,9 @@
-// Start of Class Definition: UrbanJungleEcommerce
+// ========================================
+// URBAN JUNGLE CO. SEO SPA APPLICATION
+// Main application file with SEO routing
+// ========================================
+
 class UrbanJungleEcommerce {
-  // Start of Constructor
   constructor() {
     this.currentRoute = '';
     this.products = [];
@@ -12,35 +15,46 @@ class UrbanJungleEcommerce {
     this.cartTotal = 0;
     this.mobileMenuActive = false;
     
-    // Store references to event handlers for proper cleanup
+    // SEO components
+    this.seoRouter = null;
+    this.templateManager = null;
+    
     this.eventHandlers = {
       menuToggle: null,
       mobileOverlay: null,
       escHandler: null,
-      hashChange: null,
-      globalClick: null,
       storage: null
     };
     
     this.init();
   }
-  // End of Constructor
 
-  // Start of Method: init
+  // ========================================
+  // INITIALIZATION
+  // ========================================
   async init() {
     try {
       await this.loadData();
+      
+      // Initialize SEO router and templates
+      this.seoRouter = new SEORouter(this);
+      this.templateManager = new TemplateManager(this);
+      
       this.setupGlobalEventListeners();
       this.updateCartDisplay();
-      this.handleRoute();
+      
+      // Start router
+      this.seoRouter.handleRoute();
+      
     } catch (error) {
       console.error('Failed to initialize app:', error);
       this.renderError('Failed to load application data');
     }
   }
-  // End of Method: init
 
-  // Start of Method: loadData
+  // ========================================
+  // DATA LOADING
+  // ========================================
   async loadData() {
     try {
       const [products, services, testimonials, about, contact] = await Promise.all([
@@ -61,27 +75,67 @@ class UrbanJungleEcommerce {
       throw error;
     }
   }
-  // End of Method: loadData
 
-  // Start of Method: setupGlobalEventListeners
-  setupGlobalEventListeners() {
-    // Hash change for routing
-    this.eventHandlers.hashChange = () => this.handleRoute();
-    window.addEventListener('hashchange', this.eventHandlers.hashChange);
-    
-    // Global click handler for navigation
-    this.eventHandlers.globalClick = (e) => {
-      if (e.target.matches('a[href^="#"]')) {
-        const href = e.target.getAttribute('href');
-        if (href && href !== '#') {
-          this.closeMobileMenu();
-          this.navigate(href);
-        }
+  // ========================================
+  // TEMPLATE RENDERING
+  // ========================================
+  renderByTemplate(templateName, params = {}) {
+    try {
+      const html = this.templateManager.render(templateName, params);
+      document.getElementById('content').innerHTML = html;
+      
+      if (this.seoRouter && this.seoRouter.currentRoute) {
+        const breadcrumbs = this.seoRouter.generateBreadcrumbs(this.seoRouter.currentRoute);
+        this.renderBreadcrumbs(breadcrumbs);
       }
-    };
-    document.addEventListener('click', this.eventHandlers.globalClick);
+      
+    } catch (error) {
+      console.error('Error rendering template:', error);
+      this.render404();
+    }
+  }
 
-    // Update cart count on storage change
+  renderBreadcrumbs(breadcrumbs) {
+    const breadcrumbNav = document.getElementById('breadcrumbs');
+    if (!breadcrumbNav || breadcrumbs.length <= 1) {
+      if (breadcrumbNav) breadcrumbNav.style.display = 'none';
+      return;
+    }
+
+    breadcrumbNav.style.display = 'block';
+    const ol = breadcrumbNav.querySelector('ol');
+    
+    if (ol) {
+      ol.innerHTML = breadcrumbs.map((crumb, index) => `
+        <li>
+          ${crumb.current ? 
+            `<span>${crumb.name}</span>` :
+            `<a href="${crumb.url}">${crumb.name}</a>`
+          }
+        </li>
+      `).join('');
+    }
+  }
+
+  // ========================================
+  // NAVIGATION
+  // ========================================
+  navigate(url) {
+    if (this.seoRouter) {
+      this.seoRouter.navigate(url);
+    }
+  }
+
+  handleRoute() {
+    if (this.seoRouter) {
+      this.seoRouter.handleRoute();
+    }
+  }
+
+  // ========================================
+  // EVENT LISTENERS
+  // ========================================
+  setupGlobalEventListeners() {
     this.eventHandlers.storage = (e) => {
       if (e.key === 'urbanJungleCart') {
         this.cart = this.loadCart();
@@ -90,192 +144,24 @@ class UrbanJungleEcommerce {
     };
     window.addEventListener('storage', this.eventHandlers.storage);
   }
-  // End of Method: setupGlobalEventListeners
 
-  // Start of Method: setupMobileMenu
-  // FIXED: Mobile menu setup that works reliably
-  setupMobileMenu() {
-    // Remove any existing mobile menu listeners first
-    this.removeMobileMenuListeners();
-    
-    // Use a longer timeout to ensure DOM is fully rendered
-    setTimeout(() => {
-      this.attachMobileMenuListeners();
-    }, 100);
-  }
-  // End of Method: setupMobileMenu
-
-  // Start of Method: attachMobileMenuListeners
-  attachMobileMenuListeners() {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileOverlay = document.getElementById('mobile-overlay');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    // Menu toggle button handler
-    if (menuToggle) {
-      this.eventHandlers.menuToggle = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Menu toggle clicked'); // Debug log
-        this.toggleMobileMenu();
-      };
-      
-      // Use both click and touchstart for better mobile support
-      menuToggle.addEventListener('click', this.eventHandlers.menuToggle, { passive: false });
-      menuToggle.addEventListener('touchstart', this.eventHandlers.menuToggle, { passive: false });
-    } else {
-      console.warn('Menu toggle button not found');
-    }
-
-    // Mobile overlay handler
-    if (mobileOverlay) {
-      this.eventHandlers.mobileOverlay = (e) => {
-        e.preventDefault();
-        this.closeMobileMenu();
-      };
-      mobileOverlay.addEventListener('click', this.eventHandlers.mobileOverlay);
-    }
-
-    // Mobile menu link handler
-    if (mobileMenu) {
-      const mobileLinks = mobileMenu.querySelectorAll('a[href^="#"]');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          this.closeMobileMenu();
-        });
-      });
-    }
-
-    // ESC key handler
-    this.eventHandlers.escHandler = (e) => {
-      if (e.key === 'Escape' && this.mobileMenuActive) {
-        this.closeMobileMenu();
-      }
-    };
-    document.addEventListener('keydown', this.eventHandlers.escHandler);
-  }
-  // End of Method: attachMobileMenuListeners
-
-  // Start of Method: removeMobileMenuListeners
-  removeMobileMenuListeners() {
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileOverlay = document.getElementById('mobile-overlay');
-    
-    // Remove menu toggle listeners
-    if (menuToggle && this.eventHandlers.menuToggle) {
-      menuToggle.removeEventListener('click', this.eventHandlers.menuToggle);
-      menuToggle.removeEventListener('touchstart', this.eventHandlers.menuToggle);
-    }
-    
-    // Remove overlay listener
-    if (mobileOverlay && this.eventHandlers.mobileOverlay) {
-      mobileOverlay.removeEventListener('click', this.eventHandlers.mobileOverlay);
-    }
-    
-    // Remove ESC key listener
-    if (this.eventHandlers.escHandler) {
-      document.removeEventListener('keydown', this.eventHandlers.escHandler);
-    }
-
-    // Clear handler references
-    this.eventHandlers.menuToggle = null;
-    this.eventHandlers.mobileOverlay = null;
-    this.eventHandlers.escHandler = null;
-  }
-  // End of Method: removeMobileMenuListeners
-
-  // Start of Method: navigate
-  navigate(route) {
-    window.location.hash = route;
-  }
-  // End of Method: navigate
-
-  // Start of Method: handleRoute
-  handleRoute() {
-    const hash = window.location.hash || '#home';
-    const [route, param] = hash.substring(1).split('/');
-    
-    this.currentRoute = route;
-    this.updateActiveNavLinks();
-    
-    const content = document.getElementById('content');
-    content.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
-    
-    // Close mobile menu when navigating
-    this.closeMobileMenu();
-    
-    setTimeout(() => {
-      switch (route) {
-        case 'home':
-        case '':
-          this.renderHome();
-          break;
-        case 'shop':
-          this.renderShop();
-          break;
-        case 'category':
-          this.renderCategory(param);
-          break;
-        case 'product':
-          this.renderProduct(param);
-          break;
-        case 'cart':
-          this.renderCart();
-          break;
-        case 'checkout':
-          this.renderCheckout();
-          break;
-        case 'about':
-          this.renderAbout();
-          break;
-        case 'contact':
-          this.renderContact();
-          break;
-        case 'my-account':
-          this.renderAccount();
-          break;
-        default:
-          this.render404();
-      }
-      
-      content.classList.add('fade-in');
-      setTimeout(() => content.classList.remove('f...(truncated 24895 characters)...goryMap = new Map();
-    this.products.forEach(product => {
-      const slug = product.category.toLowerCase().replace(/\s+/g, '-');
-      if (!categoryMap.has(slug)) {
-        categoryMap.set(slug, {
-          name: product.category,
-          slug: slug,
-          image: product.image
-        });
-      }
-    });
-    return Array.from(categoryMap.values());
-  }
-  // End of Method: handleRoute
-
-  // Start of Method: loadCart
-  // Cart Management
+  // ========================================
+  // CART MANAGEMENT
+  // ========================================
   loadCart() {
     const cart = localStorage.getItem('urbanJungleCart');
     return cart ? JSON.parse(cart) : [];
   }
-  // End of Method: loadCart
 
-  // Start of Method: saveCart
   saveCart() {
     localStorage.setItem('urbanJungleCart', JSON.stringify(this.cart));
     this.calculateCartTotal();
   }
-  // End of Method: saveCart
 
-  // Start of Method: calculateCartTotal
   calculateCartTotal() {
     this.cartTotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   }
-  // End of Method: calculateCartTotal
 
-  // Start of Method: addToCart
   addToCart(productId, quantity = 1) {
     const product = this.products.find(p => p.id === productId);
     if (!product) return;
@@ -297,13 +183,9 @@ class UrbanJungleEcommerce {
 
     this.saveCart();
     this.updateCartDisplay();
-    
-    // Show feedback
     this.showNotification(`${product.name} added to cart!`);
   }
-  // End of Method: addToCart
 
-  // Start of Method: updateCartQuantity
   updateCartQuantity(index, quantity) {
     if (quantity <= 0) {
       this.removeFromCart(index);
@@ -313,38 +195,53 @@ class UrbanJungleEcommerce {
     this.cart[index].quantity = parseInt(quantity);
     this.saveCart();
     this.updateCartDisplay();
-    this.renderCart(); // Re-render cart to update display
+    
+    if (this.seoRouter?.currentRoute?.handler === 'cart') {
+      this.renderByTemplate('cart');
+    }
   }
-  // End of Method: updateCartQuantity
 
-  // Start of Method: removeFromCart
   removeFromCart(index) {
     this.cart.splice(index, 1);
     this.saveCart();
     this.updateCartDisplay();
-    this.renderCart();
+    
+    if (this.seoRouter?.currentRoute?.handler === 'cart') {
+      this.renderByTemplate('cart');
+    }
   }
-  // End of Method: removeFromCart
 
-  // Start of Method: updateCartDisplay
   updateCartDisplay() {
     this.calculateCartTotal();
     const cartCount = this.cart.reduce((sum, item) => sum + item.quantity, 0);
     
-    // Update cart count
     document.querySelectorAll('.cart-contents-count, #cart-count, #mobile-cart-count').forEach(element => {
       element.textContent = cartCount;
     });
     
-    // Update cart total
     document.querySelectorAll('.cart-contents-total').forEach(element => {
       element.textContent = `$${this.cartTotal.toFixed(2)}`;
     });
   }
-  // End of Method: updateCartDisplay
 
-  // Start of Method: filterProducts
-  // Filter Products
+  // ========================================
+  // UTILITY METHODS
+  // ========================================
+  getCategories() {
+    const categoryMap = new Map();
+    this.products.forEach(product => {
+      const slug = product.category.toLowerCase().replace(/\s+/g, '-');
+      if (!categoryMap.has(slug)) {
+        categoryMap.set(slug, {
+          name: product.category,
+          slug: slug,
+          image: product.image
+        });
+      }
+    });
+    return Array.from(categoryMap.values());
+  }
+
   filterProducts(category) {
     document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
     if (event && event.target) {
@@ -363,13 +260,127 @@ class UrbanJungleEcommerce {
     }
 
     if (productsGrid) {
-      productsGrid.innerHTML = filteredProducts.map(product => this.renderProductCard(product)).join('');
+      productsGrid.innerHTML = filteredProducts.map(product => 
+        this.templateManager.renderProductCard(product)
+      ).join('');
     }
   }
-  // End of Method: filterProducts
 
-  // Start of Method: selectPaymentMethod
-  // Checkout functions
+  // ========================================
+  // MOBILE MENU
+  // ========================================
+  setupMobileMenu() {
+    this.removeMobileMenuListeners();
+    
+    setTimeout(() => {
+      this.attachMobileMenuListeners();
+    }, 100);
+  }
+
+  attachMobileMenuListeners() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuToggle) {
+      this.eventHandlers.menuToggle = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleMobileMenu();
+      };
+      
+      menuToggle.addEventListener('click', this.eventHandlers.menuToggle, { passive: false });
+      menuToggle.addEventListener('touchstart', this.eventHandlers.menuToggle, { passive: false });
+    }
+
+    if (mobileOverlay) {
+      this.eventHandlers.mobileOverlay = (e) => {
+        e.preventDefault();
+        this.closeMobileMenu();
+      };
+      mobileOverlay.addEventListener('click', this.eventHandlers.mobileOverlay);
+    }
+
+    if (mobileMenu) {
+      const mobileLinks = mobileMenu.querySelectorAll('a[href^="/"]');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          this.closeMobileMenu();
+        });
+      });
+    }
+
+    this.eventHandlers.escHandler = (e) => {
+      if (e.key === 'Escape' && this.mobileMenuActive) {
+        this.closeMobileMenu();
+      }
+    };
+    document.addEventListener('keydown', this.eventHandlers.escHandler);
+  }
+
+  removeMobileMenuListeners() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    
+    if (menuToggle && this.eventHandlers.menuToggle) {
+      menuToggle.removeEventListener('click', this.eventHandlers.menuToggle);
+      menuToggle.removeEventListener('touchstart', this.eventHandlers.menuToggle);
+    }
+    
+    if (mobileOverlay && this.eventHandlers.mobileOverlay) {
+      mobileOverlay.removeEventListener('click', this.eventHandlers.mobileOverlay);
+    }
+    
+    if (this.eventHandlers.escHandler) {
+      document.removeEventListener('keydown', this.eventHandlers.escHandler);
+    }
+
+    this.eventHandlers.menuToggle = null;
+    this.eventHandlers.mobileOverlay = null;
+    this.eventHandlers.escHandler = null;
+  }
+
+  toggleMobileMenu() {
+    if (this.mobileMenuActive) {
+      this.closeMobileMenu();
+    } else {
+      this.openMobileMenu();
+    }
+  }
+
+  openMobileMenu() {
+    this.mobileMenuActive = true;
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuToggle) menuToggle.classList.add('is-active');
+    if (mobileOverlay) mobileOverlay.classList.add('is-active');
+    if (mobileMenu) mobileMenu.classList.add('is-active');
+    
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('mobile-menu-open');
+  }
+
+  closeMobileMenu() {
+    this.mobileMenuActive = false;
+
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (menuToggle) menuToggle.classList.remove('is-active');
+    if (mobileOverlay) mobileOverlay.classList.remove('is-active');
+    if (mobileMenu) mobileMenu.classList.remove('is-active');
+    
+    document.body.style.overflow = '';
+    document.body.classList.remove('mobile-menu-open');
+  }
+
+  // ========================================
+  // FORM HANDLERS
+  // ========================================
   selectPaymentMethod(element, method) {
     document.querySelectorAll('.payment-method').forEach(pm => pm.classList.remove('selected'));
     element.classList.add('selected');
@@ -380,13 +391,10 @@ class UrbanJungleEcommerce {
       creditFields.style.display = method === 'credit' ? 'block' : 'none';
     }
   }
-  // End of Method: selectPaymentMethod
 
-  // Start of Method: processOrder
   processOrder(event) {
     event.preventDefault();
     
-    // Simulate order processing
     this.showNotification('Processing your order...');
     
     setTimeout(() => {
@@ -395,12 +403,10 @@ class UrbanJungleEcommerce {
       this.updateCartDisplay();
       
       this.showNotification('Order placed successfully! Thank you for your purchase.');
-      this.navigate('#home');
+      this.navigate('/');
     }, 2000);
   }
-  // End of Method: processOrder
 
-  // Start of Method: changeMainImage
   changeMainImage(imageSrc) {
     const mainImage = document.getElementById('main-image');
     if (mainImage) {
@@ -412,31 +418,24 @@ class UrbanJungleEcommerce {
       event.target.classList.add('active');
     }
   }
-  // End of Method: changeMainImage
 
-  // Start of Method: submitContactForm
-  // Form Handlers
   submitContactForm(event) {
     event.preventDefault();
     this.showNotification('Thank you for your message! We\'ll get back to you soon.');
     event.target.reset();
   }
-  // End of Method: submitContactForm
 
-  // Start of Method: submitLogin
   submitLogin(event) {
     event.preventDefault();
     this.showNotification('Login functionality is not implemented in this demo.');
   }
-  // End of Method: submitLogin
 
-  // Start of Method: showNotification
-  // Notification system
+  // ========================================
+  // NOTIFICATIONS
+  // ========================================
   showNotification(message) {
-    // Remove existing notifications
     document.querySelectorAll('.notification').forEach(n => n.remove());
     
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.style.cssText = `
@@ -457,7 +456,6 @@ class UrbanJungleEcommerce {
     
     document.body.appendChild(notification);
     
-    // Remove after 3 seconds
     setTimeout(() => {
       if (notification.parentNode) {
         notification.style.animation = 'slideOut 0.3s ease';
@@ -465,30 +463,51 @@ class UrbanJungleEcommerce {
       }
     }, 3000);
   }
-  // End of Method: showNotification
 
-  // Start of Method: destroy
-  // Cleanup method for proper teardown
+  // ========================================
+  // ERROR HANDLING
+  // ========================================
+  render404() {
+    const html = `
+      <div class="container">
+        <div class="empty-state">
+          <h1>Page Not Found</h1>
+          <p>The page you're looking for doesn't exist.</p>
+          <a href="/" class="wp-block-button__link">Go Home</a>
+        </div>
+      </div>
+    `;
+    document.getElementById('content').innerHTML = html;
+  }
+
+  renderError(message) {
+    const html = `
+      <div class="container">
+        <div class="empty-state">
+          <h2>Error</h2>
+          <p>${message}</p>
+          <button onclick="location.reload()" class="wp-block-button__link">Retry</button>
+        </div>
+      </div>
+    `;
+    document.getElementById('content').innerHTML = html;
+  }
+
+  // ========================================
+  // CLEANUP
+  // ========================================
   destroy() {
     this.removeMobileMenuListeners();
     
-    // Remove global listeners
-    if (this.eventHandlers.hashChange) {
-      window.removeEventListener('hashchange', this.eventHandlers.hashChange);
-    }
-    if (this.eventHandlers.globalClick) {
-      document.removeEventListener('click', this.eventHandlers.globalClick);
-    }
     if (this.eventHandlers.storage) {
       window.removeEventListener('storage', this.eventHandlers.storage);
     }
   }
-  // End of Method: destroy
 }
-// End of Class Definition: UrbanJungleEcommerce
 
-// Start of Notification Animations Setup
-// Add notification animations
+// ========================================
+// NOTIFICATION ANIMATIONS
+// ========================================
 const style = document.createElement('style');
 style.textContent = `
   @keyframes slideIn {
@@ -512,13 +531,45 @@ style.textContent = `
       opacity: 0;
     }
   }
+
+  .breadcrumbs {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+
+  .breadcrumbs li {
+    display: flex;
+    align-items: center;
+  }
+
+  .breadcrumbs li:not(:last-child)::after {
+    content: '/';
+    margin: 0 10px;
+    color: #ccc;
+  }
+
+  .breadcrumbs a {
+    color: var(--link-color);
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumbs li:last-child span {
+    color: var(--text-color);
+    font-weight: 500;
+  }
 `;
 document.head.appendChild(style);
-// End of Notification Animations Setup
 
-// Start of App Initialization
-// Initialize the app when DOM is loaded
+// ========================================
+// INITIALIZATION
+// ========================================
 document.addEventListener('DOMContentLoaded', () => {
   window.app = new UrbanJungleEcommerce();
 });
-// End of App Initialization
